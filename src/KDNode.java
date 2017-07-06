@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package baseline_i;
-
+import gnu.trove.list.array.TIntArrayList;
 import java.util.Vector;
 
 
@@ -15,14 +9,14 @@ class KDNode {
     // these are seen by KDTree
     protected HPoint k;
 
-    Object v;
+    TIntArrayList v;
 
     protected KDNode left, right;
 
-    protected boolean deleted;
+    //protected boolean deleted;
 
     // Method ins translated from 352.ins.c of Gonnet & Baeza-Yates
-    protected static KDNode ins(HPoint key, Object val, KDNode t, int lev, int K) throws KeyDuplicateException {
+    protected static KDNode ins(HPoint key, int val, KDNode t, int lev, int K) throws KeyDuplicateException {
 
         if (t == null) {
             t = new KDNode(key, val);
@@ -31,11 +25,14 @@ class KDNode {
         else if (key.equals(t.k)) {
 
             // "re-insert"
+            /*
             if (t.deleted) {
                 t.deleted = false;
                 t.v = val;
-            }
-
+            }*/
+            
+            t.v.add(val);
+            
             // else {
             // throw new KeyDuplicateException();
             // }
@@ -55,7 +52,7 @@ class KDNode {
 
         for (int lev = 0; t != null; lev = (lev + 1) % K) {
 
-            if (!t.deleted && key.equals(t.k)) {
+            if (key.equals(t.k)) {
                 return t;
             } else if (key.coord[lev] > t.k.coord[lev]) {
                 t = t.right;
@@ -68,42 +65,39 @@ class KDNode {
     }
 
     // Method rsearch translated from 352.range.c of Gonnet & Baeza-Yates
-    protected static void rsearch(HPoint lowk, HPoint uppk, KDNode t, int lev, int K, Vector<KDNode> v) {
+    protected static void rsearch(HPoint lowk, HPoint uppk, KDNode t, int lev, int K
+            , Vector<KDNode> v, int index) {
 
         if (t == null)
             return;
-        if (lowk.coord[lev] <= t.k.coord[lev]) {
-            rsearch(lowk, uppk, t.left, (lev + 1) % K, K, v);
+        if(t.k.coord[index]==lowk.coord[index])
+            return;
+        if (lowk.coord[lev] < t.k.coord[lev]) {
+            rsearch(lowk, uppk, t.left, (lev + 1) % K, K, v, index);
         }
-        int j;
+        int j, flag=0;
         for (j = 0; j < K && lowk.coord[j] <= t.k.coord[j] && uppk.coord[j] >= t.k.coord[j]; j++)
-            ;
-        if (j == K)
+        {
+            if(uppk.coord[j] == t.k.coord[j])
+            {
+                flag++;
+            }
+        }
+        if (j == K&&flag!=K)
             v.add(t);
         if (uppk.coord[lev] > t.k.coord[lev]) {
-            rsearch(lowk, uppk, t.right, (lev + 1) % K, K, v);
+            rsearch(lowk, uppk, t.right, (lev + 1) % K, K, v, index);
         }
     }
 
     // constructor is used only by class; other methods are static
-    private KDNode(HPoint key, Object val) {
+    private KDNode(HPoint key, int val) {
 
         k = key;
-        v = val;
+        v = new TIntArrayList();
+        v.add(val);
         left = null;
         right = null;
-        deleted = false;
-    }
-
-    protected String toString(int depth) {
-        String s = k + "  " + v + (deleted ? "*" : "");
-        if (left != null) {
-            s = s + "\n" + pad(depth) + "L " + left.toString(depth + 1);
-        }
-        if (right != null) {
-            s = s + "\n" + pad(depth) + "R " + right.toString(depth + 1);
-        }
-        return s;
     }
 
     private static String pad(int n) {
@@ -120,4 +114,3 @@ class KDNode {
         }
     }
 }
-

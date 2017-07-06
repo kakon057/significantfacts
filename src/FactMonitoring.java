@@ -1,10 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package baseline_i;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,25 +20,25 @@ public class FactMonitoring {
     public static long start_time, single_tuple_time, cumulative_time;
     public static long number_of_comparison, number_of_traversal;
     //*** *****PERFORMANCE MEASURES******
-    
-    public static KDTree tree;    
+
+    public static KDTree tree;
 
     public static void init() {
-           /* if (args.length < 5) {
+        /* if (args.length < 5) {
             System.out.println("Please provide command line arguments.\n\n1. dimension_attributes\n2. measure_attributes\n3. number_of_tuples\n4. dimension_skip_level\n5. measure_skip_level");
             System.exit(0);
 	}*/
-	dimension_attributes = 3;//Short.parseShort(args[0]);
-	measure_attributes = 2;//Short.parseShort(args[1]);
-	number_of_tuples = 7;//Integer.parseInt(args[2]);
-	dimension_skip_level = -1;//Short.parseShort(args[3]);
-	measure_skip_level = -1;//Short.parseShort(args[4]);
-        
-        tree= new KDTree(measure_attributes);
-        
-if(dimension_attributes == 3) {
-    total_dimension_attributes_compared = new byte[]{1,1,1};
-        /*total_dimension_attributes_compared = new byte[]{
+        dimension_attributes = 3;//Short.parseShort(args[0]);
+        measure_attributes = 2;//Short.parseShort(args[1]);
+        number_of_tuples = 7;//Integer.parseInt(args[2]);
+        dimension_skip_level = 1;//Short.parseShort(args[3]);
+        measure_skip_level = 0;//Short.parseShort(args[4]);
+
+        tree = new KDTree(measure_attributes);
+
+        if (dimension_attributes == 3) {
+            total_dimension_attributes_compared = new byte[]{1, 1, 1};
+            /*total_dimension_attributes_compared = new byte[]{
 		0, //Site Code
 		1, //Site Name
 		1, //Country
@@ -65,8 +58,8 @@ if(dimension_attributes == 3) {
 		0, //Visibility Range (Night)
 		0, //Visibility Description (Night)
         };*/
-}
-	/*
+        }
+        /*
 	if(dimension_attributes == 3) {
 	    total_dimension_attributes_compared = new byte[]{
             1, //ID
@@ -224,68 +217,69 @@ if(dimension_attributes == 3) {
             1, //OPPOSTION TEAM NAME
 	    };
 	}
-	*/
-        if(measure_attributes == 2) {
-            total_measure_attributes_compared = new byte[]{1,-1};}
-	if(measure_attributes == 3) {
-	    total_measure_attributes_compared = new byte[]{
-            0, //MINUTES PLAYED
-            0, //FGM
-            0, //FGA	
-            0, //FTM
-            0, //FTA
-            0, //TPM
-            0, //TPA
-            0, //ORB
-            0, //DRB
-            0, //TOT
-            1, //AST
-            0, //STL       	
-            0, //TO
-            1, //BLK
-            0, //PF
-            1, //PTS	
-            };	
-	} else if(measure_attributes == 4) {
-	    total_measure_attributes_compared = new byte[]{
-            0, //MINUTES PLAYED
-            0, //FGM
-            0, //FGA	
-            0, //FTM
-            0, //FTA
-            0, //TPM
-            0, //TPA
-            0, //ORB
-            0, //DRB
-            1, //TOT
-            1, //AST
-            0, //STL       	
-            0, //TO
-            1, //BLK
-            0, //PF
-            1, //PTS	
-            };	
-	} else if(measure_attributes == 5) {
-	    total_measure_attributes_compared = new byte[]{
-            0, //MINUTES PLAYED
-            0, //FGM
-            0, //FGA	
-            0, //FTM
-            0, //FTA
-            0, //TPM
-            0, //TPA
-            0, //ORB
-            0, //DRB
-            1, //TOT
-            1, //AST
-            1, //STL       	
-            0, //TO
-            1, //BLK
-            0, //PF
-            1, //PTS	
-            };	
-	} else if(measure_attributes == 7) {
-	    /*total_measure_attributes_compared = new byte[]{
+         */
+        if (measure_attributes == 2) {
+            total_measure_attributes_compared = new byte[]{1, 1};
+        }
+        if (measure_attributes == 3) {
+            total_measure_attributes_compared = new byte[]{
+                0, //MINUTES PLAYED
+                0, //FGM
+                0, //FGA	
+                0, //FTM
+                0, //FTA
+                0, //TPM
+                0, //TPA
+                0, //ORB
+                0, //DRB
+                0, //TOT
+                1, //AST
+                0, //STL       	
+                0, //TO
+                1, //BLK
+                0, //PF
+                1, //PTS	
+            };
+        } else if (measure_attributes == 4) {
+            total_measure_attributes_compared = new byte[]{
+                0, //MINUTES PLAYED
+                0, //FGM
+                0, //FGA	
+                0, //FTM
+                0, //FTA
+                0, //TPM
+                0, //TPA
+                0, //ORB
+                0, //DRB
+                1, //TOT
+                1, //AST
+                0, //STL       	
+                0, //TO
+                1, //BLK
+                0, //PF
+                1, //PTS	
+            };
+        } else if (measure_attributes == 5) {
+            total_measure_attributes_compared = new byte[]{
+                0, //MINUTES PLAYED
+                0, //FGM
+                0, //FGA	
+                0, //FTM
+                0, //FTA
+                0, //TPM
+                0, //TPA
+                0, //ORB
+                0, //DRB
+                1, //TOT
+                1, //AST
+                1, //STL       	
+                0, //TO
+                1, //BLK
+                0, //PF
+                1, //PTS	
+            };
+        } else if (measure_attributes == 7) {
+            /*total_measure_attributes_compared = new byte[]{
             0, //MINUTES PLAYED
             0, //FGM
             0, //FGA	
@@ -303,26 +297,25 @@ if(dimension_attributes == 3) {
             -1, //PF
             1, //PTS	
             };*/
-        total_measure_attributes_compared = new byte[]{
-            	1, //Wind Speed (Day)
-		1, //Screen Temperature (Day)
-		1, //Wind Speed (Night)
-		1, //Screen Temperature (Night)
-		1, //Relative Humidity (Day)
-		1, //Relative Humidity (Night)
-		1, //Wind Gust (Day)
-		0, //Wind Gust (Night)
-		0, //Feels Like Temperature (Day)
-		0, //Feels Like Temperature (Night)
-		0, //UV Index
-		0, //Precipitation Probability (Day)
-		0, //Precipitation Probability (Night)	
-        };
-	}       
+            total_measure_attributes_compared = new byte[]{
+                1, //Wind Speed (Day)
+                1, //Screen Temperature (Day)
+                1, //Wind Speed (Night)
+                1, //Screen Temperature (Night)
+                1, //Relative Humidity (Day)
+                1, //Relative Humidity (Night)
+                1, //Wind Gust (Day)
+                0, //Wind Gust (Night)
+                0, //Feels Like Temperature (Day)
+                0, //Feels Like Temperature (Night)
+                0, //UV Index
+                0, //Precipitation Probability (Day)
+                0, //Precipitation Probability (Night)	
+            };
+        }
 
 //        total_dimension_attributes_compared = new byte[]{1, 1, 1};
 //        total_measure_attributes_compared = new byte[]{1, 1};
-
         dimension_attributes_compared = new byte[dimension_attributes];
         for (int i = 0, j = 0; i < total_dimension_attributes_compared.length; i++) { //Getting Dimensions to be compared
             if (total_dimension_attributes_compared[i] != 0) {
@@ -339,24 +332,22 @@ if(dimension_attributes == 3) {
 
         short total_measure_subspace = (short) Math.pow(2, measure_attributes);
         measure_subspace_skip_bit = new byte[total_measure_subspace];
-
-        /*for (short i = 1; i < total_measure_subspace; i++) { //Setting skip beat of measure attributes
+        /*
+        for (short i = 1; i < total_measure_subspace; i++) { //Setting skip beat of measure attributes
             if (count_Num_Of_Zeros(i) <= measure_skip_level) {
                 measure_subspace_skip_bit[i] = 0;
             } else {
                 measure_subspace_skip_bit[i] = 1;
             }
         }*/
-        
-        measure_subspace_skip_bit[3]=1;
+        measure_subspace_skip_bit[3] = 1;
     }
 
     public static void load_Data() throws FileNotFoundException, IOException {
-  File data_file = new File("C:\\Users\\kakon\\Documents\\NetBeansProjects\\Bottom_Up\\src\\bottom_up\\k3.txt");
+        File data_file = new File("C:\\Users\\kakon\\Documents\\NetBeansProjects\\Bottom_Up\\src\\bottom_up\\k3.txt");
 
         /*File data_file = new File("../../data/sorted_latest.csv");*/
 //        File data_file = new File("../../data/test.csv");
-
         BufferedReader reader = new BufferedReader(new FileReader(data_file));
         //reader.readLine(); //eating header line 
 
@@ -394,25 +385,16 @@ if(dimension_attributes == 3) {
 
             for (int i = 0, m = 0; i < total_measure_attributes_compared.length; i++) {
                 cell = tokenizer.nextToken();
-                if (total_measure_attributes_compared[i] != 0) {
+                if (total_measure_attributes_compared[i] == 1) {
                     temp_measure_values[m++] = Integer.parseInt(cell);
+                } else if (total_measure_attributes_compared[i] == -1) {
+                    temp_measure_values[m++] = -Integer.parseInt(cell);
                 }
-            }            
-           
-            int p_id=Integer.parseInt(tokenizer.nextToken());
-            tuples.add(new Tuple(counter++, temp_measure_values, temp_index, p_id));
-         
-            try{
-            tree.insert(temp_measure_values, counter-1);
-            }catch(Exception e){}
-            
-            if(p_id!=-1)
-            {
-            try{
-            tree.delete(tuples.get(p_id).measure_values);
-            }catch(Exception e){}                
             }
-                        
+
+            int p_id = Integer.parseInt(tokenizer.nextToken());
+            tuples.add(new Tuple(counter++, temp_measure_values, temp_index, p_id));
+
             if (counter == number_of_tuples) {
                 break;
             }
@@ -427,9 +409,9 @@ if(dimension_attributes == 3) {
             }
         }
         return num_of_zeros;
-    }    
+    }
 
-    public static byte comparison(Tuple t, Tuple t_, short subspace) {
+    public static byte comparison(Tuple t, Tuple t_, short subspace, boolean isConsecutive) {
         if (t_.tested_by == t.id && t_.subspace == subspace) {
             return t_.test_result;
         }
@@ -440,17 +422,12 @@ if(dimension_attributes == 3) {
 
         for (short m = 0, quotient = subspace; m < measure_attributes; m++, quotient = (short) (quotient / 2)) {
             if (quotient % 2 != 0) {
-                if (measure_attributes_compared[m] == 1) {
-                    if (t.measure_values[m] > t_.measure_values[m]) {
-                        t_dom_t_++;
-                    } else if (t_.measure_values[m] > t.measure_values[m]) {
-                        t__dom_t++;
-                    }
-                } else if (measure_attributes_compared[m] == -1) {
-                    if (t.measure_values[m] < t_.measure_values[m]) {
-                        t_dom_t_++;
-                    } else if (t_.measure_values[m] < t.measure_values[m]) {
-                        t__dom_t++;
+                if (t.measure_values[m] > t_.measure_values[m]) {
+                    t_dom_t_++;
+                } else if (t_.measure_values[m] > t.measure_values[m]) {
+                    t__dom_t++;
+                    if (isConsecutive) {
+                        return (byte) m;
                     }
                 }
 
@@ -475,7 +452,5 @@ if(dimension_attributes == 3) {
         }
         t_.test_result = -1;
         return -1; // t_ is dominated by t
-    }    
+    }
 }
-
-
