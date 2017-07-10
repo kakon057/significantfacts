@@ -81,7 +81,7 @@ public class Baseline_I extends FactMonitoring {
         }
     }
 
-    public static void pbaseline_I(int tuple_id, short subspace, int index) {
+    public static void pbaseline_I(int tuple_id, short subspace, int measure) {
         int p_id = tuples.get(tuple_id).prev_id;
 
         TIntArrayList range_query_result = new TIntArrayList();
@@ -94,13 +94,15 @@ public class Baseline_I extends FactMonitoring {
                     tempArray[m] = 0;
                 }
             }
-            tempArray[index] = tuples.get(tuple_id).measure_values[index];
+            tempArray[measure] = tuples.get(tuple_id).measure_values[measure];
 
-            range_query_result = tree.range(tempArray, tuples.get(p_id).measure_values, index);
+            range_query_result = tree.range(tempArray, tuples.get(p_id).measure_values, measure);
 
         } catch (Exception e) {
         }
 
+        range_query_result.add(tuple_id);
+        
         for (int j = 0; j < range_query_result.size(); j++) {
             baseline_I((int) range_query_result.get(j), subspace);
         }

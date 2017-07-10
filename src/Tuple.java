@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package baseline_i;
+package stop_down;
+
+import java.util.ArrayList;
 
 public class Tuple {
 
@@ -14,6 +16,7 @@ public class Tuple {
     public int[] measure_values; // measure att values of this tuple 
     public Index dimension_index; // dimensional att values[after mapping from String to int] of this tuple.
     public int prev_id;
+    public ArrayList<Index> maximal_skyline_constraints;
 
     Tuple(int id, int[] measure_values, Index dimension_index, int prev_id) {
         this.id = id;
@@ -23,6 +26,7 @@ public class Tuple {
         this.dimension_index.indices = dimension_index.indices.clone();
         this.measure_values = measure_values.clone();
         this.prev_id=prev_id;
+        //maximal_skyline_constraint=new ArrayList<Index>();
     }
 
     public void print() {
@@ -42,3 +46,4 @@ public class Tuple {
         System.out.println(prev_id);
     }
 }
+
