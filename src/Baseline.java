@@ -1,23 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package baseline_i;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 import gnu.trove.list.array.TIntArrayList;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- *
- * @author naeemul
- */
 public class Baseline_I extends FactMonitoring {
 
     public static Dimension_Lattice dimension_lattice;
@@ -28,7 +13,16 @@ public class Baseline_I extends FactMonitoring {
         load_Data();
 
         dimension_lattice = new Dimension_Lattice(dimension_attributes);
+
+        int temp_gameID = -1;
+
         for (int i = 0; i < number_of_tuples; i++) {
+            start_time = System.currentTimeMillis();
+            
+            if (temp_gameID != tuples.get(i).game_id) {
+                tree.clear();
+                temp_gameID = tuples.get(i).game_id;
+            }
             try {
                 tree.insert(tuples.get(i).measure_values, i);
 
@@ -40,15 +34,16 @@ public class Baseline_I extends FactMonitoring {
             } catch (Exception e) {
             }
             //System.out.println("ID, M_SUBSPACE, SKYLINE_CONSTRAINTS, DOMINATED_BY"); // Reporting details of each tuple
-            start_time = System.currentTimeMillis();
+
             number_of_comparison = 0;
             subspace_Baseline_I(i);
             single_tuple_time = System.currentTimeMillis() - start_time;
             cumulative_time += single_tuple_time;
             //System.out.println("ID, TIME");
             //System.out.println(i + "," + single_tuple_time);
-            //if(i%1000 == 0)
-            System.out.println(i + "," + cumulative_time + "," + number_of_comparison);
+            if (i % 1000 == 0) {
+                System.out.println(i + "," + single_tuple_time + "," + number_of_comparison);
+            }
         }
         //System.out.println("Total Execution Time: " + cumulative_time + "ms");
     }
@@ -102,7 +97,7 @@ public class Baseline_I extends FactMonitoring {
         }
 
         range_query_result.add(tuple_id);
-        
+
         for (int j = 0; j < range_query_result.size(); j++) {
             baseline_I((int) range_query_result.get(j), subspace);
         }
@@ -123,7 +118,7 @@ public class Baseline_I extends FactMonitoring {
             Tuple t_ = tuples.get(i);
 
             number_of_comparison++;
-            System.out.println(i);
+            //System.out.println(i);
 
             dom = comparison(t, t_, subspace, false);
 
