@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Baseline_I extends FactMonitoring {
+public class Baseline extends FactMonitoring {
 
     public static Dimension_Lattice dimension_lattice;
     public static int number_of_tuples_dominating_new_tuple;
@@ -62,6 +62,8 @@ public class Baseline_I extends FactMonitoring {
                     baseline_I(tuple_id, i);
                     continue;
                 }
+
+number_of_comparison++;
 
                 int dom = comparison(tuples.get(tuple_id), tuples.get(p_id), i, true);
 

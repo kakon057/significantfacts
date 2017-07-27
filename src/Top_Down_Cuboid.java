@@ -1,10 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package top_down;
-
 public class Top_Down_Cuboid extends Cuboid
 {
     public int flag; // This variable is used to keep record of number of parents visited.

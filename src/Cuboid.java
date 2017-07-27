@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package stop_down;
 import gnu.trove.list.array.TIntArrayList;
 
 public class Cuboid {
@@ -33,5 +27,4 @@ public class Cuboid {
         skyline_tuples = new TIntArrayList[(short) Math.pow(2, measure_attributes)]; // This is not allocating space, just storing references. Our understanding is each reference takes 128B.
     }
 }
-
 

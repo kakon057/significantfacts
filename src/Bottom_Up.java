@@ -1,14 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package bottom_up;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,9 +15,17 @@ public class Bottom_Up extends FactMonitoring {
         load_Data();
         cube = new HashMap<Index, Cuboid>();
         Runtime runtime = Runtime.getRuntime(); // Getting JAVA runtime
+        int temp_gameID = -1;
+total_number_of_comparison=0;
+
         for (int i = 0; i < number_of_tuples; i++) {
             start_time = System.currentTimeMillis();
+number_of_comparison=0;
 
+            if (temp_gameID != tuples.get(i).game_id) {
+                tree.clear();
+                temp_gameID = tuples.get(i).game_id;
+            }
             try {
                 tree.insert(tuples.get(i).measure_values, i);
 
@@ -44,10 +41,12 @@ public class Bottom_Up extends FactMonitoring {
 
             single_tuple_time = System.currentTimeMillis() - start_time;
             cumulative_time += single_tuple_time;
+total_number_of_comparison+=number_of_comparison;
             //System.out.println("ID, TOTAL_CELL, TOTAL_SKYLINE, TIME");
             //System.out.println(i + "," + num_of_cells + "," + total_skyline_tuples + "," + single_tuple_time);
-            //if(i%1000 == 0)
-            System.out.println(i + "," + cumulative_time + "," + num_of_cells + "," + total_skyline_tuples + "," + (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024) + "," + number_of_comparison + "," + number_of_traversal);
+            if (i % 1000 == 0) {
+                System.out.println(i + "," + single_tuple_time + "," + cumulative_time+","+num_of_cells + "," + total_skyline_tuples + "," + (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024) + "," + number_of_comparison + "," + total_number_of_comparison+","+number_of_traversal);
+            }
         }
         //System.out.println("Total Execution Time: " + cumulative_time + "ms");
     }
@@ -64,6 +63,8 @@ public class Bottom_Up extends FactMonitoring {
                     bottom_Up(tuple_id, i);
                     continue;
                 }
+
+number_of_comparison++;
 
                 int dom = comparison(tuples.get(tuple_id), tuples.get(p_id), i, true);
 
@@ -133,8 +134,6 @@ public class Bottom_Up extends FactMonitoring {
                         total_skyline_tuples--;
                         i--;
                     }
-                    System.out.println(dom);
-                    index.print();
                 }
                 if (cube.get(index).last_updated_by != tuple_id || cube.get(index).last_updated_subspace != measure_subspace) {
                     cube.get(index).last_updated_by = tuple_id;
@@ -174,9 +173,12 @@ public class Bottom_Up extends FactMonitoring {
                     }
                 }
             } else {
-                if (cube.get(index).last_updated_by == tuple_id
+                if (cube.containsKey(index) == false) {
+                    continue;
+                } else if (cube.get(index).last_updated_by == tuple_id
                         && cube.get(index).last_updated_subspace == subspace
                         && cube.get(index).affected_by_prev_id) {
+
                     continue;
                 }
 
@@ -188,7 +190,7 @@ public class Bottom_Up extends FactMonitoring {
                 }
 
                 cube.get(index).skyline_tuples[subspace].remove(p_id);
-                cube.get(index).skyline_tuples[subspace].add(tuple_id); 
+                cube.get(index).skyline_tuples[subspace].add(tuple_id);
 
                 if (cube.get(index).last_updated_by != tuple_id || cube.get(index).last_updated_subspace != subspace
                         || cube.get(index).affected_by_prev_id == false) {
@@ -202,7 +204,7 @@ public class Bottom_Up extends FactMonitoring {
                             parent_index.indices[d] = 0;
                             queue.add(parent_index);
                         }
-                    }                  
+                    }
                 }
             }
         }
@@ -244,7 +246,10 @@ public class Bottom_Up extends FactMonitoring {
                     }
                 }
             } else {
-                if (cube.get(index).last_updated_by == tuple_id
+                if (cube.containsKey(index) == false) {
+                    System.out.print("here");
+                    continue;
+                } else if (cube.get(index).last_updated_by == tuple_id
                         && cube.get(index).last_updated_subspace == subspace
                         && cube.get(index).affected_by_prev_id) {
                     continue;
@@ -290,7 +295,6 @@ public class Bottom_Up extends FactMonitoring {
                         if (cube.get(index).last_updated_by == tuple_id
                                 && cube.get(index).last_updated_subspace == subspace
                                 && cube.get(index).affected_by_prev_id == false) {
-                            System.out.println("here");
                             break;
                         }
                     }
